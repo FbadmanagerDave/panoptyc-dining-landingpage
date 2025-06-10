@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cafe Shrink Calculator - Panoptyc</title>
+  <style>
+    body {
+      font-family: 'Helvetica Neue', sans-serif;
+      background-color: #fefefe;
+      color: #333;
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 520px;
+      width: 100%;
+      background: #fff;
+      padding: 35px 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    }
+    h2 {
+      color: #D32F2F;
+      text-align: center;
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: 600;
+      color: #b71c1c;
+    }
+    select, input {
+      width: 100%;
+      padding: 12px 14px;
+      margin-top: 8px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+      background: #fafafa;
+      box-sizing: border-box;
+    }
+    select:focus, input:focus {
+      outline: none;
+      border-color: #D32F2F;
+    }
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 20px;
+      background-color: #D32F2F;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #B71C1C;
+    }
+    .output {
+      margin-top: 20px;
+      background: #FFEBEE;
+      padding: 18px;
+      border-left: 4px solid #D32F2F;
+      border-radius: 8px;
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 70px;
+    }
+    form {
+      margin-top: 30px;
+    }
+    form h3 {
+      text-align: center;
+      color: #D32F2F;
+      font-size: 22px;
+      margin-bottom: 15px;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Cafe Shrink Calculator</h2>
+
+    <label for="locationType">Select Location Type:</label>
+    <select id="locationType" required>
+      <option value="" disabled selected>Select a location type</option>
+      <option value="institutional">Institutional Dining</option>
+      <option value="corporate">Corporate Dining</option>
+      <option value="manufacturing">Manufacturing Dining</option>
+      <option value="healthcare">Healthcare Dining</option>
+      <option value="educational">Educational Dining</option>
+    </select>
+
+    <label for="revenue">Enter Annual Revenue ($):</label>
+    <input type="number" id="revenue" placeholder="e.g. 500000" min="1" required />
+
+    <label for="customShrink">Enter Your Own Shrink % (Optional):</label>
+    <input type="number" id="customShrink" placeholder="e.g. 10 for 10%" min="0" max="100" step="0.01" />
+
+    <button id="calcBtn">Calculate</button>
+
+    <div class="output" id="output"></div>
+
+    <form id="auditForm" method="POST" action="https://script.google.com/macros/s/AKfycbw6upTwyqD3ImE1BOfpc-OEF-cOM5Es-QLnScFQrXdh51SOWkTMhrgYgdCdURl3beQM/exec" novalidate>
+      <h3>Get a Free Theft Audit</h3>
+      <input type="text" name="name" placeholder="Name" required />
+      <input type="email" name="email" placeholder="Email" required />
+      <input type="text" name="company" placeholder="Company Name" required />
+      <input type="tel" name="phone" placeholder="Phone" required />
+
+      <!-- Hidden fields to capture calculator data -->
+      <input type="hidden" name="locationType" id="formLocationType" />
+      <input type="hidden" name="annualRevenue" id="formAnnualRevenue" />
+      <input type="hidden" name="customShrinkPercent" id="formCustomShrinkPercent" />
+      <input type="hidden" name="calculatorOutput" id="formCalculatorOutput" />
+
+      <button type="submit">Request Free Audit</button>
+    </form>
+  </div>
+
+  <script>
+    const outputEl = document.getElementById('output');
+    const calcBtn = document.getElementById('calcBtn');
+    const form = document.getElementById('auditForm');
+
+    function formatCurrency(num) {
+      return '$' + num.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    }
+
+    function calculateShrink() {
+      const type = document.getElementById('locationType').value;
+      const revenue = parseFloat(document.getElementById('revenue').value);
+      const customShrinkRaw = document.getElementById('customShrink').value;
+      const customShrink = parseFloat(customShrinkRaw);
+
+      if (!type) {
+        outputEl.innerHTML = '<span style="color:#b71c1c;">Please select a location type.</span>';
+        return false;
+      }
+      if (isNaN(revenue) || revenue <= 0) {
+        outputEl.innerHTML = '<span style="color:#b71c1c;">Please enter a valid positive revenue amount.</span>';
+        return false;
+      }
+      if (customShrinkRaw !== '' && (isNaN(customShrink) || customShrink < 0 || customShrink > 100)) {
+        outputEl.innerHTML = '<span style="color:#b71c1c;">Please enter a valid shrink percentage between 0 and 100.</span>';
+        return false;
+      }
+
+      let minShrink = 0.08, maxShrink = 0.15;
+
+      switch(type) {
+        case 'institutional': minShrink = 0.08; maxShrink = 0.15; break;
+        case 'corporate': minShrink = 0.06; maxShrink = 0.12; break;
+        case 'manufacturing': minShrink = 0.06; maxShrink = 0.12; break;
+        case 'healthcare': minShrink = 0.05; maxShrink = 0.10; break;
+        case 'educational': minShrink = 0.08; maxShrink = 0.15; break;
+      }
+
+      let outputHTML = '';
+
+      if (!isNaN(customShrink) && customShrink > 0) {
+        const shrinkDecimal = customShrink / 100;
+        const loss = revenue * shrinkDecimal;
+        const minSavings = loss * 0.3;
+        const maxSavings = loss * 0.5;
+        outputHTML = `
+          <strong>Using Your Shrink %: ${customShrink.toFixed(2)}%</strong><br>
+          <strong>Estimated Annual Shrink Loss:</strong> ${formatCurrency(loss)}<br>
+          <strong>Potential Savings with Panoptyc:</strong> ${formatCurrency(minSavings)} - ${formatCurrency(maxSavings)}<br>
+          <em>Panoptyc can reduce shrink by 30% to 50%.</em>
+        `;
+      } else {
+        const minLoss = revenue * minShrink;
+        const maxLoss = revenue * maxShrink;
+        const minSavings = minLoss * 0.3;
+        const maxSavings = maxLoss * 0.5;
+        outputHTML = `
+          <strong>Estimated Annual Shrink Loss:</strong> ${formatCurrency(minLoss)} - ${formatCurrency(maxLoss)}<br>
+          <strong>Potential Savings with Panoptyc:</strong> ${formatCurrency(minSavings)} - ${formatCurrency(maxSavings)}<br>
+          <em>Panoptyc can reduce shrink by 30% to 50%.</em>
+        `;
+      }
+
+      outputEl.innerHTML = outputHTML;
+      return true;
+    }
+
+    calcBtn.addEventListener('click', e => {
+      e.preventDefault();
+      calculateShrink();
+    });
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      
+      // Ensure calculator validation runs before form submit
+      if (!calculateShrink()) {
+        alert("Please correct the calculator inputs before submitting the form.");
+        return;
+      }
+
+      // Populate hidden form fields
+      document.getElementById('formLocationType').value = document.getElementById('locationType').value;
+      document.getElementById('formAnnualRevenue').value = document.getElementById('revenue').value;
+      document.getElementById('formCustomShrinkPercent').value = document.getElementById('customShrink').value || '';
+      document.getElementById('formCalculatorOutput').value = outputEl.innerText.trim();
+
+      const formData = new FormData(form);
+      const scriptURL = form.action;
+
+      fetch(scriptURL, { method: 'POST', body: formData })
+        .then(response => {
+          if (response.ok) {
+            alert('Thank you! Your request has been submitted.');
+            form.reset();
+            outputEl.innerHTML = '';
+          } else {
+            throw new Error('Network response was not ok');
+          }
+        })
+        .catch(error => {
+          alert('Oops! There was a problem submitting your request.');
+          console.error('Error:', error);
+        });
+    });
+  </script>
+</body>
+</html>
