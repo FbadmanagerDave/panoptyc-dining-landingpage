@@ -171,8 +171,8 @@
       if (!isNaN(customShrink) && customShrink > 0) {
         const shrinkDecimal = customShrink / 100;
         const loss = revenue * shrinkDecimal;
-        const minSavings = loss * 0.3;
-        const maxSavings = loss * 0.5;
+        const minSavings = loss * 0.4;
+        const maxSavings = loss * 0.6;
         outputHTML = `
           <strong>Based on Provided Shrink %: ${customShrink.toFixed(2)}%</strong><br>
           <strong>Estimated Annual Shrink Loss:</strong> ${formatCurrency(loss)}<br>
@@ -187,7 +187,7 @@
         outputHTML = `
           <strong>Estimated Annual Shrink Loss:</strong> ${formatCurrency(minLoss)} - ${formatCurrency(maxLoss)}<br>
           <strong>Potential Savings with Panoptyc:</strong> ${formatCurrency(minSavings)} - ${formatCurrency(maxSavings)}<br>
-          <em>Panoptyc can reduce shrink by 30% to 50%.</em>
+          <em>Panoptyc can reduce shrink by 40% to 60%.</em>
         `;
       }
 
