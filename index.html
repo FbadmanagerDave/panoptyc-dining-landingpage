@@ -104,7 +104,7 @@
     <label for="revenue">Enter Annual Revenue ($):</label>
     <input type="number" id="revenue" placeholder="e.g. 500000" min="1" required />
 
-    <label for="customShrink">Enter Your Own Shrink % (Optional):</label>
+    <label for="customShrink"> Enter Shrink % (optional, if known):</label>
     <input type="number" id="customShrink" placeholder="e.g. 10 for 10%" min="0" max="100" step="0.01" />
 
     <button id="calcBtn">Calculate</button>
@@ -159,11 +159,11 @@
       let minShrink = 0.08, maxShrink = 0.15;
 
       switch(type) {
-        case 'institutional': minShrink = 0.08; maxShrink = 0.15; break;
+        case 'institutional': minShrink = 0.06; maxShrink = 0.11; break;
         case 'corporate': minShrink = 0.06; maxShrink = 0.12; break;
-        case 'manufacturing': minShrink = 0.06; maxShrink = 0.12; break;
-        case 'healthcare': minShrink = 0.05; maxShrink = 0.10; break;
-        case 'educational': minShrink = 0.08; maxShrink = 0.15; break;
+        case 'manufacturing': minShrink = 0.08; maxShrink = 0.15; break;
+        case 'healthcare': minShrink = 0.08; maxShrink = 0.14; break;
+        case 'educational': minShrink = 0.06; maxShrink = 0.13; break;
       }
 
       let outputHTML = '';
@@ -174,16 +174,16 @@
         const minSavings = loss * 0.3;
         const maxSavings = loss * 0.5;
         outputHTML = `
-          <strong>Using Your Shrink %: ${customShrink.toFixed(2)}%</strong><br>
+          <strong>Based on Provided Shrink %: ${customShrink.toFixed(2)}%</strong><br>
           <strong>Estimated Annual Shrink Loss:</strong> ${formatCurrency(loss)}<br>
           <strong>Potential Savings with Panoptyc:</strong> ${formatCurrency(minSavings)} - ${formatCurrency(maxSavings)}<br>
-          <em>Panoptyc can reduce shrink by 30% to 50%.</em>
+          <em>Panoptyc can reduce shrink by 40% to 60%.</em>
         `;
       } else {
         const minLoss = revenue * minShrink;
         const maxLoss = revenue * maxShrink;
-        const minSavings = minLoss * 0.3;
-        const maxSavings = maxLoss * 0.5;
+        const minSavings = minLoss * 0.4;
+        const maxSavings = maxLoss * 0.6;
         outputHTML = `
           <strong>Estimated Annual Shrink Loss:</strong> ${formatCurrency(minLoss)} - ${formatCurrency(maxLoss)}<br>
           <strong>Potential Savings with Panoptyc:</strong> ${formatCurrency(minSavings)} - ${formatCurrency(maxSavings)}<br>
