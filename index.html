@@ -40,6 +40,58 @@
     header button:hover {
       background: #FFEBEE;
     }
+    .why-matters {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 60px 20px;
+      text-align: center;
+    }
+    .why-matters h2 {
+      color: #D32F2F;
+      font-size: 32px;
+      margin-bottom: 20px;
+    }
+    .why-matters p {
+      font-size: 18px;
+      line-height: 1.6;
+      margin-bottom: 40px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .features {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+    }
+    .feature {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+      padding: 30px;
+      width: 300px;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .feature:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+    }
+    .feature-icon {
+      font-size: 36px;
+      color: #D32F2F;
+      margin-bottom: 15px;
+    }
+    .feature-title {
+      font-weight: 700;
+      color: #B71C1C;
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+    .feature-desc {
+      font-size: 15px;
+      line-height: 1.5;
+    }
     .container {
       max-width: 520px;
       margin: 0 auto;
@@ -105,6 +157,14 @@
       font-size: 22px;
       margin-bottom: 15px;
     }
+    footer {
+      background: #D32F2F;
+      color: #fff;
+      text-align: center;
+      padding: 20px 10px;
+      font-size: 14px;
+      margin-top: 60px;
+    }
   </style>
 </head>
 <body>
@@ -113,6 +173,28 @@
     <p>Use our free calculator to estimate your annual shrink loss and potential savings with Panoptyc.</p>
     <button onclick="document.getElementById('calculator').scrollIntoView({ behavior: 'smooth' });">Calculate Now</button>
   </header>
+
+  <section class="why-matters">
+    <h2>Why It Matters</h2>
+    <p>Dining operators lose 8%–15% of annual revenue to theft and shrinkage. Panoptyc reduces this by up to 60%, protecting profits and improving operational efficiency.</p>
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon">🧠</div>
+        <div class="feature-title">AI Monitoring</div>
+        <div class="feature-desc">24/7 real-time oversight reduces risk and loss, ensuring complete visibility across your dining operations.</div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">💰</div>
+        <div class="feature-title">Shrink Savings</div>
+        <div class="feature-desc">Up to 60% reduction in annual shrinkage loss, directly translating to enhanced bottom-line profitability.</div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">✔️</div>
+        <div class="feature-title">Proven ROI</div>
+        <div class="feature-desc">Trusted by 20,000+ dining locations nationwide with demonstrable improvements in operational efficiency and security.</div>
+      </div>
+    </div>
+  </section>
 
   <section id="calculator">
     <div class="container">
@@ -153,6 +235,10 @@
       </form>
     </div>
   </section>
+
+  <footer>
+    &copy; 2025 Panoptyc. All rights reserved.
+  </footer>
 
   <script>
     const outputEl = document.getElementById('output');
